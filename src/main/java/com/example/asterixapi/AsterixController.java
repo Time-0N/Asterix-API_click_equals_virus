@@ -1,44 +1,35 @@
 package com.example.asterixapi;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/asterix")
+@RequiredArgsConstructor
 public class AsterixController {
 
-    private final AsterixRepository asterixRepository;
-
-    public AsterixController(AsterixRepository asterixRepository) {
-        this.asterixRepository = asterixRepository;
-    }
+    private final AsterixService asterixService;
 
     @GetMapping("/characters")
     public List<Asterix> getAllCharacters() {
-
-        return asterixRepository.findAll();
+        return asterixService.getAllCharacters();
     }
 
-    @PostMapping("/characters")
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<Asterix> addList(@RequestBody Asterix asterix) {
-        asterixRepository.insert(asterix)
-        return null;
+    @GetMapping("/characters/{id}")
+    public Asterix findById(@PathVariable String id) {
+        return asterixService.getCharacterById(id);
     }
 
     @PutMapping("/characters/{id}")
-    public List<Asterix> updateCharacter(@RequestBody Asterix asterix, @PathVariable String id) {
-        Optional<Asterix> optional = asterixRepository.findById(id);
-
-        if (optional.isPresent()) {
-            Asterix a = optional.get();
-            a.setName(asterix.getName());
-            // ...
-            asterixRepository.save(a);
-        }
+    public Asterix updateCharacter(@PathVariable String id, @RequestBody Asterix updatedCharacter) {
+        return asterixService.updateCharacter(id, updatedCharacter);
     }
+
+    @DeleteMapping("/characters/{id}")
+    public void deleteCharacter(@PathVariable String id) {
+        deleteCharacter(id);
+    }
+
 }
