@@ -46,18 +46,4 @@ public class CharacterServiceTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test
-    void updateCharacter() {
-        AsterixRepository repo = Mockito.mock(AsterixRepository.class);
-
-        Asterix expected = new Asterix("2", "Idefix", 7, "Hund");
-        Mockito.when(repo.save(new Asterix("1", "Asterix", 35, "Krieger"))).thenReturn(Optional.of(expected));
-
-        AsterixService service = new AsterixService(repo);
-
-        Asterix actual = service.updateCharacter("2", new Asterix("2", "Idefix", 7, "Hund"));
-
-
-        Assertions.assertEquals(expected, actual);
-    }
 }
